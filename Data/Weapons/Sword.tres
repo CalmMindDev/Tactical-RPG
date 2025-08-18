@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://g0eoj1ktep7n"]
+
+[ext_resource type="Script" uid="uid://dt41cywcxxux4" path="res://Data/WeaponData.gd" id="1_g8upt"]
+
+[resource]
+script = ExtResource("1_g8upt")
+WeaponName = "Standard Sword"
+Damage = 5
+Speed = -1.0
+Crit = 0.05
+Type = 1
+Attributes = Array[String]([])
+metadata/_custom_type_script = "uid://dt41cywcxxux4"

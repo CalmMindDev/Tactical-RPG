@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://b8881v718j72y"]
+
+[ext_resource type="Script" uid="uid://dt41cywcxxux4" path="res://Data/WeaponData.gd" id="1_xdsnd"]
+
+[resource]
+script = ExtResource("1_xdsnd")
+WeaponName = "Standard Axe"
+Damage = 0
+Speed = 0.0
+Crit = 0.0
+Type = 3
+Attributes = Array[String]([])
+metadata/_custom_type_script = "uid://dt41cywcxxux4"

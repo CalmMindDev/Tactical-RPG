@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://idihtc02hsl8"]
+
+[ext_resource type="Script" uid="uid://d3uxbfjf3t1wn" path="res://Scenes/TestScript.cs" id="1_b5ayd"]
+[ext_resource type="Script" uid="uid://tpdmjn1oqg3q" path="res://MapLogic/MapNPC.gd" id="2_5lt6y"]
+
+[node name="TestScene" type="Node2D"]
+script = ExtResource("1_b5ayd")
+
+[node name="MapCharacter" type="Node" parent="."]
+script = ExtResource("2_5lt6y")
+Level = 4

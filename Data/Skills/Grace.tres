@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3 uid="uid://5ibcqtytdm2w"]
+
+[ext_resource type="Script" uid="uid://b7nyyme13feog" path="res://Data/TraitStaticData.gd" id="1_yb0us"]
+
+[resource]
+script = ExtResource("1_yb0us")
+name = ""
+metadata/_custom_type_script = "uid://b7nyyme13feog"

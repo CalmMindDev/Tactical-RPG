@@ -1,0 +1,10 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+#was ChatGPT meinte 
+.import/ 
+.export/ 
+*.import 
+*.tmp
+*.log 
+*.cache
