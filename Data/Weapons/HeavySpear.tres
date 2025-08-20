@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://dxup6hspem34o"]
+
+[ext_resource type="Script" uid="uid://dt41cywcxxux4" path="res://StaticDataLogic/WeaponData.gd" id="1_myx23"]
+
+[resource]
+script = ExtResource("1_myx23")
+Tag = "Heavy Spear"
+Damage = 8
+Speed = -1.3
+Crit = 0.12
+Kind = 2
+Attributes = Array[String]([])
+metadata/_custom_type_script = "uid://dt41cywcxxux4"

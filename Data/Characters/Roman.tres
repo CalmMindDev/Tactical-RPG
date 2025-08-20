@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CharacterStaticData" load_steps=3 format=3 uid="uid://1m38p7um65ky"]
+
+[ext_resource type="Resource" uid="uid://d3hndvv37lj2r" path="res://Data/Roles/Officer.tres" id="1_jlopk"]
+[ext_resource type="Script" uid="uid://dtujicsd5vikb" path="res://StaticDataLogic/CharacterStaticData.gd" id="1_s8j8d"]
+
+[resource]
+script = ExtResource("1_s8j8d")
+Tag = "Roman"
+Level = 5
+Role = ExtResource("1_jlopk")
+Defense = 50
+Skill = 30
+React = 40
+Focus = 18
+Aura = 16
+Precision = 18
+metadata/_custom_type_script = "uid://dtujicsd5vikb"

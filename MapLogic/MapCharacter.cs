@@ -1,4 +1,4 @@
-/*using Godot;
+using Godot;
 using System;
 
 public partial class MapCharacter : Node 
@@ -8,16 +8,20 @@ public partial class MapCharacter : Node
 	[Export] public int MaxDefense {get; private set;}
 	[Export] public int CurrentDefense {get; set;}
 	
-	public Equipment MapEquipment {get; private set;}
+	public EquipmentObject MapEquipment {get; private set;}
 
-	public MapCharacterData() {}
+	public string ChosenWeapon = "Weapon0";
 
-	public MapCharacterData(CharacterData charData)
+	public MapCharacter() {}
+
+	public MapCharacter(CharacterData charData)
 	{
 		MapCharacterData = charData;
 		MapEquipment = MapCharacterData.Equipment;
-		MaxDefense = MapCharacterData.Defense;
-		CurrentDefense = MapCharacterData.Defense;
+
+
+		MaxDefense = MapCharacterData.GetStat(StatsEnum.DEFENSE);
+		CurrentDefense = MapCharacterData.GetStat(StatsEnum.DEFENSE);
 	}
 
-}*/
+}

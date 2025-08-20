@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public enum CSStats { 
+public enum StatsEnum { 
 	DEFAULT,
 	DEFENSE, 
 	SKILL, 

@@ -1,10 +1,11 @@
 using Godot;
 using System;
 
-public enum CSWeaponKinds { 
+public enum WeaponKindsEnum { 
 	DEFAULT,
 	SWORD, 
 	SPEAR, 
 	AXE, 
-	SPECIAL, 
+	DAGGER,
+	STAVE,
 	ARTIFACT }

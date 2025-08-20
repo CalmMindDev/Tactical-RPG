@@ -3,33 +3,38 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-public partial class CharacterData : Resource
+public abstract partial class CharacterData : Resource
 {
-	public int Level;
+	public int Level {get; protected set;}
+	protected Dictionary<StatsEnum, int> _baseStats;
 
-	//wieder protected machen
-	public Dictionary<CSStats, int> _baseStats;
-
-	public EquipmentObject Equipment;
+	public EquipmentObject Equipment {get; protected set;}
 
 	//Das englische Wort Class kann vlt etwas verwirrend mit Class in C# sein, deswegen das Deutsche
-	public RoleData Role;
+	public RoleData Role {get; protected set;}
 
 
 	public CharacterData() 
 	{
 		Level = 1;
 
-		_baseStats = new Dictionary<CSStats, int> {
-			{ CSStats.DEFENSE, 		1},
-			{ CSStats.SKILL,   		1}, 
-			{ CSStats.REACT,  		1}, 
-			{ CSStats.FOCUS,   		1}, 
-			{ CSStats.AURA,   		1}, 
-			{ CSStats.PRECISION, 	1}
+		_baseStats = new Dictionary<StatsEnum, int> {
+			{ StatsEnum.DEFENSE, 		1},
+			{ StatsEnum.SKILL,   		1}, 
+			{ StatsEnum.REACT,  		1}, 
+			{ StatsEnum.FOCUS,   		1}, 
+			{ StatsEnum.AURA,   		1}, 
+			{ StatsEnum.PRECISION, 	1}
 		};
 
 		Equipment = new EquipmentObject();
+	}
+
+	public Dictionary<StatsEnum, int> GetStats() {
+		return _baseStats;
+	}
+	public int GetStat(StatsEnum stat) {
+		return _baseStats[stat];
 	}
 }
 

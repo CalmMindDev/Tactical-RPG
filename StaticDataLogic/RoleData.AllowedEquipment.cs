@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 public partial class RoleData : Resource
 {
-	private CSWeaponKinds[] _weaponSlot0; 
-	private CSWeaponKinds[] _weaponSlot1; 
-	private CSWeaponKinds[] _weaponSlot2; 
+	private WeaponKindsEnum[] _weaponSlot0; 
+	private WeaponKindsEnum[] _weaponSlot1; 
+	private WeaponKindsEnum[] _weaponSlot2; 
 	
 	private Godot.Collections.Array _gdWeaponSlot0;
 	private Godot.Collections.Array _gdWeaponSlot1;
@@ -35,7 +35,7 @@ public partial class RoleData : Resource
 
 		_gdWeaponSlot0 = value;
 		_weaponSlot0 = value
-			.Select(v => (CSWeaponKinds)v.As<int>())
+			.Select(v => (WeaponKindsEnum)v.As<int>())
 			.ToArray();
 	}}
 
@@ -57,7 +57,7 @@ public partial class RoleData : Resource
 
 		_gdWeaponSlot1 = value;
 		_weaponSlot1 = value
-			.Select(v => (CSWeaponKinds)v.As<int>())
+			.Select(v => (WeaponKindsEnum)v.As<int>())
 			.ToArray();
 
 		_weaponSlot1set = true;
@@ -81,7 +81,7 @@ public partial class RoleData : Resource
 
 		_gdWeaponSlot2 = value;
 		_weaponSlot2 = value
-			.Select(v => (CSWeaponKinds)v.As<int>())
+			.Select(v => (WeaponKindsEnum)v.As<int>())
 			.ToArray();
 
 		_weaponSlot2set = true;
@@ -105,15 +105,15 @@ public partial class RoleData : Resource
 		_weaponSlot2set = true;}
 
 
-	public CSWeaponKinds[] GetWeaponSlot0() =>  _weaponSlot0;
-	public CSWeaponKinds[] GetWeaponSlot1() =>  _weaponSlot1;
-	public CSWeaponKinds[] GetWeaponSlot2() =>  _weaponSlot2;
+	public WeaponKindsEnum[] GetWeaponSlot0() =>  _weaponSlot0;
+	public WeaponKindsEnum[] GetWeaponSlot1() =>  _weaponSlot1;
+	public WeaponKindsEnum[] GetWeaponSlot2() =>  _weaponSlot2;
 
-	public Dictionary<string, Func<CSWeaponKinds>> WeaponSlots;
+	public Dictionary<string, Func<WeaponKindsEnum>> WeaponSlots;
 	
 	
-	public Dictionary<string, CSWeaponKinds[]> GetWeaponSlots()	{
-		var weaponSlots = new Dictionary<string, CSWeaponKinds[]>{};
+	public Dictionary<string, WeaponKindsEnum[]> GetWeaponSlots()	{
+		var weaponSlots = new Dictionary<string, WeaponKindsEnum[]>{};
 		if (GetWeaponSlot0() != null)
 			weaponSlots.Add("Weapon0", GetWeaponSlot0());
 		if (GetWeaponSlot1() != null)

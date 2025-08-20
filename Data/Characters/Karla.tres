@@ -1,16 +1,16 @@
 [gd_resource type="Resource" script_class="CharacterStaticData" load_steps=3 format=3 uid="uid://b0x6abqcx1bwm"]
 
-[ext_resource type="Script" uid="uid://dtujicsd5vikb" path="res://Data/CharacterStaticData.gd" id="1_2ty48"]
+[ext_resource type="Script" uid="uid://dtujicsd5vikb" path="res://StaticDataLogic/CharacterStaticData.gd" id="1_2ty48"]
 [ext_resource type="Resource" uid="uid://d3hndvv37lj2r" path="res://Data/Roles/Officer.tres" id="1_rksy7"]
 
 [resource]
 script = ExtResource("1_2ty48")
-Tag = ""
+Tag = "Karla"
 Level = 5
 Role = ExtResource("1_rksy7")
 Defense = 40
-Skill = 20
-React = 20
+Skill = 80
+React = 30
 Focus = 14
 Aura = 16
 Precision = 20

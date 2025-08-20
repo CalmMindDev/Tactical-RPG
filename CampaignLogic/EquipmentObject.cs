@@ -6,16 +6,16 @@ using System.Collections.Generic;
 
 public partial class EquipmentObject : Resource
 {
-    private Dictionary<string, EquipmentSlot<WeaponData, CSWeaponKinds>> _weaponSlots;
+    private Dictionary<string, EquipmentSlot<WeaponData, WeaponKindsEnum>> _weaponSlots;
     public int[] StatBonuses {get; private set;}
 
 	public EquipmentObject() {
-        _weaponSlots = new Dictionary<string, EquipmentSlot<WeaponData, CSWeaponKinds>>{};
+        _weaponSlots = new Dictionary<string, EquipmentSlot<WeaponData, WeaponKindsEnum>>{};
     }
 
-	public void Initialize(Dictionary<string, CSWeaponKinds[]> weaponSlots) {
+	public void Initialize(Dictionary<string, WeaponKindsEnum[]> weaponSlots) {
         foreach (var kvp in weaponSlots){
-            _weaponSlots.Add(kvp.Key, new EquipmentSlot<WeaponData, CSWeaponKinds>(kvp.Value));
+            _weaponSlots.Add(kvp.Key, new EquipmentSlot<WeaponData, WeaponKindsEnum>(kvp.Value));
         }
     }
 
@@ -40,7 +40,14 @@ public partial class EquipmentObject : Resource
         }
         return _weaponSlots[key].Item;
     }
-    public CSWeaponKinds[] WeaponSlot(int numb) {
+    public WeaponData Weapon(string key) {
+        if (!_weaponSlots.ContainsKey(key)){
+            GD.PrintErr($"Weapon(int): Weaponslot {key} doesn't exist");
+            return null;
+        }
+        return _weaponSlots[key].Item;
+    }
+    public WeaponKindsEnum[] WeaponSlot(int numb) {
         var key = "Weapon" + numb.ToString();
         if (!_weaponSlots.ContainsKey(key)){
             GD.PrintErr($"WeaponSlot(int): {key} doesn't exist");

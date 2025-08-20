@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="RoleData" load_steps=2 format=3 uid="uid://d3hndvv37lj2r"]
 
-[ext_resource type="Script" uid="uid://cm6g2hjpkxo7b" path="res://Data/RoleData.gd" id="1_c4nqw"]
+[ext_resource type="Script" uid="uid://cm6g2hjpkxo7b" path="res://StaticDataLogic/RoleData.gd" id="1_c4nqw"]
 
 [resource]
 script = ExtResource("1_c4nqw")

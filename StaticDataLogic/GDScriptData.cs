@@ -105,16 +105,15 @@ public static class GDScriptData {
 	}
 	private static WeaponData TransferWeaponData(Resource gdWeaponData)
 	{
-		var weaponData = new WeaponData();
-		
-		weaponData.SetWeaponTag(gdWeaponData.Get("Tag").As<string>());
-		weaponData.SetAttributes((Godot.Collections.Array)gdWeaponData.Get("Attributes"));
-		weaponData.SetKind(gdWeaponData.Get("Kind").As<int>());
-		
+		var tag = gdWeaponData.Get("Tag").As<string>();
 		var damage = gdWeaponData.Get("Damage").As<int>();
 		var speed = gdWeaponData.Get("Speed").As<float>();
 		var crit = gdWeaponData.Get("Crit").As<float>();
-		weaponData.SetNumbers(damage, speed, crit);
+		
+		var weaponData = new WeaponData(tag, damage, speed, crit);
+		
+		weaponData.SetAttributes((Godot.Collections.Array)gdWeaponData.Get("Attributes"));
+		weaponData.SetKind(gdWeaponData.Get("Kind").As<int>());
 
 		return weaponData;
 
@@ -146,13 +145,13 @@ public static class GDScriptData {
 	{
 		var tag = gdCharData.Get("Tag").As<string>();
 		var level = gdCharData.Get("Level").As<int>();
-		var stats = new Dictionary<CSStats, int>{
-			{CSStats.DEFENSE, gdCharData.Get("Defense").As<int>()},
-			{CSStats.SKILL, gdCharData.Get("Skill").As<int>()},
-			{CSStats.REACT, gdCharData.Get("React").As<int>()},
-			{CSStats.FOCUS, gdCharData.Get("Focus").As<int>()},
-			{CSStats.AURA, gdCharData.Get("Aura").As<int>()},
-			{CSStats.PRECISION, gdCharData.Get("Precision").As<int>()},
+		var stats = new Dictionary<StatsEnum, int>{
+			{StatsEnum.DEFENSE, gdCharData.Get("Defense").As<int>()},
+			{StatsEnum.SKILL, gdCharData.Get("Skill").As<int>()},
+			{StatsEnum.REACT, gdCharData.Get("React").As<int>()},
+			{StatsEnum.FOCUS, gdCharData.Get("Focus").As<int>()},
+			{StatsEnum.AURA, gdCharData.Get("Aura").As<int>()},
+			{StatsEnum.PRECISION, gdCharData.Get("Precision").As<int>()},
 		};
 		var roleResource = (Godot.Resource)gdCharData.Get("Role");
 		var roleData = LoadRole(roleResource.ResourcePath);
