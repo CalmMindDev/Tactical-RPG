@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" source="seamless_tiles_illust_0.tsx"/>
+ <layer id="1" name="Kachelebene 1" width="10" height="10">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,19,12,12,12,1,1,1,1,1,
+1,19,19,12,12,1,1,1,1,1,
+1,19,19,19,1,1,1,1,10,10,
+1,1,19,19,1,1,1,10,10,10,
+1,1,1,1,1,10,10,10,10,10,
+1,1,1,1,10,10,10,10,10,10
+</data>
+ </layer>
+ <layer id="2" name="SeaTest" width="10" height="10">
+  <data encoding="csv">
+8,8,8,8,14,6,6,6,6,8,
+8,8,8,8,14,6,8,8,6,8,
+8,8,8,8,14,6,6,6,6,7,
+8,8,8,8,14,14,6,6,8,8,
+8,8,8,8,8,14,14,14,8,8,
+8,8,8,8,8,8,8,14,14,14,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8
+</data>
+ </layer>
+</map>

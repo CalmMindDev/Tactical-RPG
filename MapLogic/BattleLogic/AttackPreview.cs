@@ -15,7 +15,7 @@ enum CombatPositionsEnum {
     DEFSUPPORT
 }
 
-public partial class AttackPreview : Node 
+public partial class AttackPrep : Node 
 {
     private MapCharacter Attacker;
     private WeaponData AtcWeapon;
@@ -25,7 +25,7 @@ public partial class AttackPreview : Node
     private MapCharacter AtcSupport;
     private MapCharacter DefSupport;
 
-    public AttackPreview(MapCharacter attacker, MapCharacter defender, 
+    public AttackPrep(MapCharacter attacker, MapCharacter defender, 
     MapCharacter atcSupport = null, MapCharacter defSupport = null) 
     {
         Attacker = attacker;
@@ -113,4 +113,10 @@ public partial class AttackPreview : Node
             GD.Print($"Runde {i+1}: Angreifer = {Rounds[i].Atc}, Verteidiger = {Rounds[i].Def}");
         }
     }
+
+    private void StartAttack() {}
+
+
+
 }
+
