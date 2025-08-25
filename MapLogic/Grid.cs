@@ -12,6 +12,8 @@ public partial class Grid : Node
 	[Export] public TileMapLayer PassabilityLayer;
 	[Export] public TileMapLayer RangeLayer;
 
+	public MapObjectCache MapObjectCache = new MapObjectCache();
+
 	public AStar2D AStarInfantry = new AStar2D();
 	public AStar2D AStarCavalry = new AStar2D();
 	public AStar2D AStarRogue = new AStar2D();
@@ -79,8 +81,8 @@ public partial class Grid : Node
 		ConnectPoints(AStarRogue);
 		
 		
-		HighlightMovement(new Vector2I(6, 1), 6, MovementMode.Rogue);
-		HighlightAttack();
+		CallDeferred("HighlightMovement", new Vector2I(6, 1), 6, (int)MovementMode.Infantry	);
+		CallDeferred("HighlightAttack");
 
 	}
 
@@ -131,6 +133,8 @@ public partial class Grid : Node
 
 
 	public void HighlightMovement(Vector2I startingVektor, int movement, MovementMode mode) {
+		MapObjectCache.GetMapObjects();
+		
 		var startingTile = IDArray[startingVektor.X, startingVektor.Y]; 
 
 		AStar2D astar = mode switch {
@@ -149,13 +153,14 @@ public partial class Grid : Node
 					pathWeight += astar.GetPointWeightScale(id);
 				if (pathWeight < movement) {
 					var coord = (Vector2I)astar.GetPointPosition(tileId);
-					RangeLayer.SetCell(coord, 0, new Vector2I(0,0), 0);
+					if (!MapObjectCache.General.Contains(coord))
+						RangeLayer.SetCell(coord, 0, new Vector2I(0,0), 0);
 				}
 			}
 		}
 	}
 	public  void HighlightAttack() {
-		
+
 		var usedCellsGD = RangeLayer.GetUsedCells();
 		Vector2I[] usedCells = usedCellsGD.Cast<Vector2I>().ToArray();
 

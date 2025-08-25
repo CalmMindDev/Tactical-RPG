@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bkhj0yr283gej"]
-
-[ext_resource type="PackedScene" uid="uid://eocjj5xt7txb" path="res://Scenes/Tiled/Test.tmx" id="1_37kl0"]
-
-[node name="Test" instance=ExtResource("1_37kl0")]
