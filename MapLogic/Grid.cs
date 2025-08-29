@@ -8,11 +8,10 @@ public partial class Grid : Node
 	public int Height {get; private set;}
 	public int Width {get; private set;}
 
+	public MapParameters Map;
 	[Export] public TileMapLayer GroundLayer;
 	[Export] public TileMapLayer PassabilityLayer;
 	[Export] public TileMapLayer RangeLayer;
-
-	public MapObjectCache MapObjectCache = new MapObjectCache();
 
 	public AStar2D AStarInfantry = new AStar2D();
 	public AStar2D AStarCavalry = new AStar2D();
@@ -20,37 +19,18 @@ public partial class Grid : Node
 	private AStar2D AStarFree = new AStar2D();
 	public 	int[,] IDArray;
 
-	public override void _Ready()
+	public override void _EnterTree()
 	{   
 
-		
-
-		var sizeVect = GroundLayer.GetUsedRect().Size;
-		Width = sizeVect[0];
-		Height = sizeVect[1];
-
-		//Cursor 
-		var tileSize = (Vector2)GroundLayer.TileSet.TileSize;
-
-		var refRect = new ReferenceRect();
-		refRect.Size = tileSize;
-		refRect.BorderWidth = 3;
-		refRect.Modulate = Colors.Black;
-		refRect.SetEditorOnly(false);
-		refRect.ZIndex = 20;
-		AddChild(refRect);
-
-		var cursorInstance = new Cursor();
-		cursorInstance.Initialize(Width, Height, (int)tileSize.X);
-		refRect.AddChild(cursorInstance);
-
+		Map = GetNode<MapParameters>("/root/TestScene/Map"); 
+		Map.Initialize(GroundLayer);
 
 		//Astar Punkte
-		IDArray = new int[Width, Height];
+		IDArray = new int[Map.Width, Map.Height];
 
 		var id = 0;
-		for (int y = 0; y < Height; y++)      
-		for (int x = 0; x < Width; x++){
+		for (int y = 0; y < Map.Height; y++)      
+		for (int x = 0; x < Map.Width; x++){
 			var vect = new Vector2I(x, y);
 			AStarFree.AddPoint(id, vect, 1f);
 			IDArray[x, y] = id;
@@ -79,10 +59,6 @@ public partial class Grid : Node
 		ConnectPoints(AStarCavalry);
 		ConnectPoints(AStarInfantry);
 		ConnectPoints(AStarRogue);
-		
-		
-		CallDeferred("HighlightMovement", new Vector2I(6, 1), 6, (int)MovementMode.Infantry	);
-		CallDeferred("HighlightAttack");
 
 	}
 
@@ -90,8 +66,8 @@ public partial class Grid : Node
 		
 		HashSet<long> points = new HashSet<long>(astar.GetPointIds());  
 		
-		for (int y = 0; y < Height; y++)      
-		for (int x = 0; x < Width; x++){
+		for (int y = 0; y < Map.Height; y++)      
+		for (int x = 0; x < Map.Width; x++){
 
 			if (!points.Contains(IDArray[x,y ]))
 				continue;
@@ -102,7 +78,7 @@ public partial class Grid : Node
 			foreach (var dir in Directions.Four) {
 				var neighbourVect = pointVect + dir;
 
-				if (neighbourVect.X < 0 || neighbourVect.X >= Width || neighbourVect.Y < 0 || neighbourVect.Y >= Height)
+				if (neighbourVect.X < 0 || neighbourVect.X >= Map.Width || neighbourVect.Y < 0 || neighbourVect.Y >= Map.Height)
 					continue;
 				
 				if (!astar.HasPoint(IDArray[neighbourVect.X, neighbourVect.Y]))
@@ -132,65 +108,7 @@ public partial class Grid : Node
 	}
 
 
-	public void HighlightMovement(Vector2I startingVektor, int movement, MovementMode mode) {
-		MapObjectCache.GetMapObjects();
-		
-		var startingTile = IDArray[startingVektor.X, startingVektor.Y]; 
 
-		AStar2D astar = mode switch {
-			MovementMode.Infantry => AStarInfantry,
-			MovementMode.Cavalry => AStarCavalry,
-			MovementMode.Rogue  => AStarRogue
-		};
-
-		foreach (var tileId in astar.GetPointIds()) {
-			var path = astar.GetIdPath(startingTile, tileId).ToList();
-			path.RemoveAt(0);
-
-			if (path.Count <= movement) {
-				float pathWeight = 0;
-				foreach (var id in path)
-					pathWeight += astar.GetPointWeightScale(id);
-				if (pathWeight < movement) {
-					var coord = (Vector2I)astar.GetPointPosition(tileId);
-					if (!MapObjectCache.General.Contains(coord))
-						RangeLayer.SetCell(coord, 0, new Vector2I(0,0), 0);
-				}
-			}
-		}
-	}
-	public  void HighlightAttack() {
-
-		var usedCellsGD = RangeLayer.GetUsedCells();
-		Vector2I[] usedCells = usedCellsGD.Cast<Vector2I>().ToArray();
-
-		var emptyNeighbours = 
-				(from cell in usedCells
-				let surrounding = RangeLayer.GetSurroundingCells(cell)
-											.Where(v => !usedCells.Contains(v))
-											.Where(v => Width > v.X && v.X >= 0 && Height > v.Y && v.Y >= 0)            
-											.ToArray()
-				where surrounding.Length > 0
-				select new {cell, surrounding})
-				.ToDictionary(k => k.cell, v => v.surrounding);
-
-		//Hashset.Contains() ist effizienter als Array.Contains()
-		var points = new HashSet<long>(AStarInfantry.GetPointIds());
-
-		foreach (var kvp in emptyNeighbours) {
-			foreach (var targetV in kvp.Value){
-				var startV = kvp.Key;
-				if(!points.Contains(IDArray[targetV.X, targetV.Y]))
-					continue;
-				if (!AStarInfantry.ArePointsConnected(IDArray[startV.X, startV.Y], IDArray[targetV.X, targetV.Y], false))
-					continue;
-				if (RangeLayer.GetCellTileData(targetV) == null)
-					RangeLayer.SetCell(targetV, 0, new Vector2I(1,0), 0);
-			}
-
-		}
-
-	}
 }
 public static class Directions
 {
