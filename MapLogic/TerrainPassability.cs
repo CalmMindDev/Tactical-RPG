@@ -3,43 +3,36 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-public partial class Grid : Node
+public partial class TerrainPassability : TileMapLayer
 {
-	public int Height {get; private set;}
-	public int Width {get; private set;}
-
-	public MapParameters Map;
-	[Export] public TileMapLayer GroundLayer;
-	[Export] public TileMapLayer PassabilityLayer;
-	[Export] public TileMapLayer RangeLayer;
-
 	public AStar2D AStarInfantry = new AStar2D();
 	public AStar2D AStarCavalry = new AStar2D();
 	public AStar2D AStarRogue = new AStar2D();
 	private AStar2D AStarFree = new AStar2D();
 	public 	int[,] IDArray;
 
-	public override void _EnterTree()
+	private TileGrid _map;
+
+	public override void _Ready()
 	{   
 
-		Map = GetNode<MapParameters>("/root/TestScene/Map"); 
-		Map.Initialize(GroundLayer);
+		_map = GetParent() as TileGrid;
 
 		//Astar Punkte
-		IDArray = new int[Map.Width, Map.Height];
+		IDArray = new int[_map.Width, _map.Height];
 
 		var id = 0;
-		for (int y = 0; y < Map.Height; y++)      
-		for (int x = 0; x < Map.Width; x++){
+		for (int y = 0; y < _map.Height; y++)      
+		for (int x = 0; x < _map.Width; x++){
 			var vect = new Vector2I(x, y);
 			AStarFree.AddPoint(id, vect, 1f);
 			IDArray[x, y] = id;
-			if (PassabilityLayer.GetCellTileData(vect) != null && PassabilityLayer.GetCellTileData(vect).GetCustomData("Unpassable").As<bool>()){
+			if (GetCellTileData(vect) != null && GetCellTileData(vect).GetCustomData("Unpassable").As<bool>()){
 				id++;
 				continue;
 			 }
 		
-			var td = GroundLayer.GetCellTileData(vect);
+			var td = _map.GroundLayer.GetCellTileData(vect);
 
 			AStarCavalry.AddPoint(id, vect, td.GetCustomData("Cavalry").As<float>());
 			
@@ -66,19 +59,19 @@ public partial class Grid : Node
 		
 		HashSet<long> points = new HashSet<long>(astar.GetPointIds());  
 		
-		for (int y = 0; y < Map.Height; y++)      
-		for (int x = 0; x < Map.Width; x++){
+		for (int y = 0; y < _map.Height; y++)      
+		for (int x = 0; x < _map.Width; x++){
 
 			if (!points.Contains(IDArray[x,y ]))
 				continue;
 			
 			var pointVect = new Vector2I(x, y);
-			var pointPassabilityTile = PassabilityLayer.GetCellTileData(pointVect);
+			var pointPassabilityTile = GetCellTileData(pointVect);
 
 			foreach (var dir in Directions.Four) {
 				var neighbourVect = pointVect + dir;
 
-				if (neighbourVect.X < 0 || neighbourVect.X >= Map.Width || neighbourVect.Y < 0 || neighbourVect.Y >= Map.Height)
+				if (neighbourVect.X < 0 || neighbourVect.X >= _map.Width || neighbourVect.Y < 0 || neighbourVect.Y >= _map.Height)
 					continue;
 				
 				if (!astar.HasPoint(IDArray[neighbourVect.X, neighbourVect.Y]))

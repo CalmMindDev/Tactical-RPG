@@ -1,51 +1,50 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 public partial class MapObjects : Node {
-	public List<Vector2I> General = new List<Vector2I>();
-	public List<Vector2I> PlayerTeam = new List<Vector2I>();
-	public List<Vector2I> EnemyTeam1 = new List<Vector2I>();
-	public List<Vector2I> FriendlyTeam1 = new List<Vector2I>();
+	public Dictionary<Vector2I, Teams> ObjectCache = new Dictionary<Vector2I, Teams>();
 
+	public CharacterSelectionInfo CharDTO;
 
-	public event EventHandler MapObjectsAsked;
-	[Signal] public delegate void PCSelectedEventHandler(Vector2I position);
+	[Signal] public delegate void CharSelectedEventHandler(CharacterSelectionInfo charDTO, Godot.Collections.Array<Vector2I> unpassable, Godot.Collections.Array<Vector2I> unattackable, bool pc);
 
 	public override void _Ready() {
 		CallDeferred("SubscribeToCursor");
 	}
 
 	public void GetMapObjects() {
-		General.Clear();
-		PlayerTeam.Clear();
-		EnemyTeam1.Clear();
-		FriendlyTeam1.Clear();
-		MapObjectsAsked.Invoke(this, EventArgs.Empty);
+		ObjectCache.Clear();
+		GetTree().CallGroup("mapObjects", "RegisterPosition");
 	}
 
 	public void SubscribeToCursor() {
-		GD.Print("Subscribed to Cursor");
-		var cursor = GetNode<Cursor>("/root/TestScene/Cursor");
+		var cursor = GetNode<Cursor>("%Cursor");
 		cursor.CursorSelected += OnSelected;
 	}
 	public void OnSelected(Vector2I position) {
-		GD.Print($"On Selected läuft in {position}");
 		GetMapObjects();
-		if (PlayerTeam.Contains(position))
-			EmitSignal(SignalName.PCSelected, position);
+		if (ObjectCache.ContainsKey(position) && ObjectCache[position] != Teams.Environment) {
+			GetTree().CallGroup("characters", "GetMapDTO", position);
+			Godot.Collections.Array<Vector2I> unpassable = new Godot.Collections.Array<Vector2I>(ObjectCache.Keys);
+			var teamMates = ObjectCache
+				.Where(kvp => kvp.Value == CharDTO.Team) 
+				.Select(kvp => kvp.Key)                 
+				.ToArray();  
+			var unattackable = new Godot.Collections.Array<Vector2I>(teamMates); 
+			bool pc = false;
+			if (CharDTO.Team == Teams.Player)
+				pc = true;
+			EmitSignal(nameof(CharSelected), CharDTO, unpassable, unattackable, pc);
+			CharDTO = null;
 		}
-
+	}
 }
 interface IMapObject
 {   
 	Vector2I GridPosition {get;}
 	Teams Team {get;}
-	void SubscribeToCache();
-	
-	void OnMapObjectsAsked(object cache, EventArgs e) {
-		var typedCache = cache as MapObjects;
-		typedCache.General.Add(GridPosition);
-	}
+	void RegisterPosition();
 }

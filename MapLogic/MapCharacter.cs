@@ -1,37 +1,28 @@
 using Godot;
 using System;
 
-public partial class MapCharacter : Node, IMapObject
+public partial class MapCharacter : Node2D, IMapObject
 {
 	//IMapObject Integration 
 	public Vector2I GridPosition {get; set;}
 	public Teams Team {get; private set;}
-	
-	public void SubscribeToCache() {
-		var mapObjects = GetParent().GetParent() as MapObjects;
-		mapObjects.MapObjectsAsked += OnMapObjectsAsked;
-		mapObjects.PCSelected += OnPCSelected;
+
+	public void RegisterPosition() {
+		((MapObjects)GetParent().GetParent()).ObjectCache.Add(GridPosition, Team);
 	}
 	
-	public void OnMapObjectsAsked(object cache, EventArgs e) {
-		var typedCache = cache as MapObjects;
-		typedCache.General.Add(GridPosition);
-		switch(Team) {
-			case Teams.Player: 
-				typedCache.PlayerTeam.Add(GridPosition);
-				break;
-			case Teams.Enemy1:
-				typedCache.EnemyTeam1.Add(GridPosition);
-				break;
-			case Teams.Friendly1:
-				typedCache.FriendlyTeam1.Add(GridPosition);
-				break;
-			default: 
-				break;
+	//Map Misc	
+	public void GetMapDTO(Vector2I position) {
+		if (position != GridPosition) 
+			return;
+
+		if (((MapObjects)GetParent().GetParent()).CharDTO != null){
+			GD.Print("Tried to define multiple CharDTOs in MapObjects");
+			return;
 		}
+		((MapObjects)GetParent().GetParent()).CharDTO = new CharacterSelectionInfo(GridPosition, Team, MovementMode.Infantry, 6, AttackMode.CloseCombat);
 	}
-	//Map Misc
-	public MapRangeHighlights MapRange;
+
 
 	//CharacterData
 	[Export] public CharacterData MapCharacterData {get; private set;}
@@ -54,16 +45,33 @@ public partial class MapCharacter : Node, IMapObject
 		CurrentDefense = MapCharacterData.GetStat(StatsEnum.DEFENSE);
 
 		Team = Teams.Player;
-		GridPosition = new Vector2I(6,1);
-		SubscribeToCache();
+		var grid = GetNode<TileGrid>("%Map");
+		GridPosition = grid.GetGridPosition(Position);
 
-		MapRange = GetNode<MapRangeHighlights>("/root/TestScene/Map/Highlight");
-
+		AddToGroup("mapObjects");
+		AddToGroup("characters");
 	}
+}
+public partial class CharacterSelectionInfo : GodotObject {
+	public Vector2I TilePosition {get;}
 
-	public void OnPCSelected(Vector2I position) {
-		MapRange.HighlightMovement(new Vector2I(6, 1), 5, MovementMode.Infantry);
-		MapRange.HighlightAttack();
+	public Teams Team;
+
+	public MovementMode MovementMode {get;}
+	public int MovementRange {get;}
+
+	public AttackMode AttackMode {get;}
+	public int MinimumAttackRange {get;}
+	public int MaximumAttackRange {get;}
+
+	public CharacterSelectionInfo(Vector2I position, Teams team, MovementMode movementMode, int movement, AttackMode attackMode) {
+		TilePosition = position;
+		Team = team;
+
+		MovementMode = movementMode;
+		MovementRange = movement;
+
+		AttackMode = attackMode;
 	}
 
 }

@@ -1,15 +1,16 @@
-[gd_scene load_steps=19 format=4 uid="uid://idihtc02hsl8"]
+[gd_scene load_steps=22 format=4 uid="uid://idihtc02hsl8"]
 
 [ext_resource type="Script" uid="uid://d3uxbfjf3t1wn" path="res://Scenes/TestScript.cs" id="1_b5ayd"]
-[ext_resource type="Script" uid="uid://c05tv2qf8nto8" path="res://MapLogic/Grid.cs" id="3_0f5h7"]
 [ext_resource type="Script" uid="uid://dlg7rtswilm0o" path="res://MapLogic/MapObjects.cs" id="3_ytmxh"]
 [ext_resource type="Texture2D" uid="uid://cr1ai6462m6mb" path="res://Graphics/Map/Passable Tiles.png" id="4_c264a"]
 [ext_resource type="Texture2D" uid="uid://cye85n1ss8kyc" path="res://Graphics/Map/3quYbiC.png" id="4_qsjrb"]
 [ext_resource type="Texture2D" uid="uid://dmt5gqsletjyb" path="res://Graphics/Map/RangeIndicator.png" id="5_6xh1p"]
 [ext_resource type="Texture2D" uid="uid://b8ky0k406jn35" path="res://Graphics/Karla.png" id="5_c264a"]
-[ext_resource type="TileSet" uid="uid://ce3xrtc2visvi" path="res://Graphics/Map/unit_path_tileset.tres" id="6_6xh1p"]
-[ext_resource type="Script" uid="uid://bcbj8trfi1t3q" path="res://MapLogic/MapParameters.cs" id="6_ytmxh"]
+[ext_resource type="Script" uid="uid://cvpxtyel16dxw" path="res://MapLogic/TileGrid.cs" id="6_ytmxh"]
+[ext_resource type="Script" uid="uid://ij4kx2h56v54" path="res://MapLogic/TerrainPassability.cs" id="8_hctok"]
 [ext_resource type="Script" uid="uid://c61g8u6mpvhdl" path="res://MapLogic/MapRangeHighlights.cs" id="8_ytmxh"]
+[ext_resource type="Texture2D" uid="uid://yae30js66xt2" path="res://Graphics/Map/Path.png" id="9_t2vuu"]
+[ext_resource type="Script" uid="uid://ccl4j0jb5yfwt" path="res://MapLogic/MapPathHighlight.cs" id="10_hctok"]
 [ext_resource type="Script" uid="uid://dp26o3wcx6sus" path="res://MapLogic/MapCharacter.cs" id="11_hctok"]
 [ext_resource type="Script" uid="uid://cp0kmhf3eby70" path="res://MapLogic/Cursor.cs" id="11_xjl2p"]
 
@@ -71,6 +72,98 @@ custom_data_layer_3/type = 1
 custom_data_layer_4/name = "Unpassable"
 custom_data_layer_4/type = 1
 sources/0 = SubResource("TileSetAtlasSource_5rbs6")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lp1f3"]
+texture = ExtResource("9_t2vuu")
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 1
+0:0/0/terrains_peering_bit/right_side = 1
+0:0/0/terrains_peering_bit/bottom_side = 0
+0:0/0/terrains_peering_bit/left_side = 1
+0:0/0/terrains_peering_bit/top_side = 1
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 0
+1:0/0/terrains_peering_bit/right_side = 0
+1:0/0/terrains_peering_bit/left_side = 0
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 0
+2:0/0/terrains_peering_bit/bottom_side = 0
+2:0/0/terrains_peering_bit/top_side = 0
+3:0/0 = 0
+3:0/0/terrain_set = 0
+3:0/0/terrain = 0
+3:0/0/terrains_peering_bit/right_side = 0
+4:0/0 = 0
+4:0/0/terrain_set = 0
+4:0/0/terrain = 0
+4:0/0/terrains_peering_bit/left_side = 0
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrain = 1
+0:1/0/terrains_peering_bit/right_side = 1
+0:1/0/terrains_peering_bit/bottom_side = 1
+0:1/0/terrains_peering_bit/left_side = 1
+0:1/0/terrains_peering_bit/top_side = 0
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrain = 1
+1:1/0/terrains_peering_bit/right_side = 1
+1:1/0/terrains_peering_bit/bottom_side = 1
+1:1/0/terrains_peering_bit/left_side = 1
+1:1/0/terrains_peering_bit/top_side = 1
+2:1/0 = 0
+2:1/0/terrain_set = 0
+2:1/0/terrain = 0
+2:1/0/terrains_peering_bit/right_side = 0
+2:1/0/terrains_peering_bit/bottom_side = 0
+3:1/0 = 0
+3:1/0/terrain_set = 0
+3:1/0/terrain = 0
+3:1/0/terrains_peering_bit/bottom_side = 0
+3:1/0/terrains_peering_bit/left_side = 0
+4:1/0 = 0
+4:1/0/terrain_set = 0
+4:1/0/terrain = 0
+4:1/0/terrains_peering_bit/bottom_side = 0
+0:2/0 = 0
+0:2/0/terrain_set = 0
+0:2/0/terrain = 1
+0:2/0/terrains_peering_bit/right_side = 0
+0:2/0/terrains_peering_bit/bottom_side = 1
+0:2/0/terrains_peering_bit/left_side = 1
+0:2/0/terrains_peering_bit/top_side = 1
+1:2/0 = 0
+1:2/0/terrain_set = 0
+1:2/0/terrain = 1
+1:2/0/terrains_peering_bit/right_side = 1
+1:2/0/terrains_peering_bit/bottom_side = 1
+1:2/0/terrains_peering_bit/left_side = 0
+1:2/0/terrains_peering_bit/top_side = 1
+2:2/0 = 0
+2:2/0/terrain_set = 0
+2:2/0/terrain = 0
+2:2/0/terrains_peering_bit/right_side = 0
+2:2/0/terrains_peering_bit/top_side = 0
+3:2/0 = 0
+3:2/0/terrain_set = 0
+3:2/0/terrain = 0
+3:2/0/terrains_peering_bit/left_side = 0
+3:2/0/terrains_peering_bit/top_side = 0
+4:2/0 = 0
+4:2/0/terrain_set = 0
+4:2/0/terrain = 0
+4:2/0/terrains_peering_bit/top_side = 0
+
+[sub_resource type="TileSet" id="TileSet_p30di"]
+terrain_set_0/mode = 2
+terrain_set_0/terrain_0/name = "Arrow"
+terrain_set_0/terrain_0/color = Color(100, 0, 0, 1)
+terrain_set_0/terrain_1/name = "Base"
+terrain_set_0/terrain_1/color = Color(0, 0, 100, 1)
+sources/0 = SubResource("TileSetAtlasSource_lp1f3")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_201fe"]
 texture = ExtResource("5_6xh1p")
@@ -1532,24 +1625,28 @@ sources/0 = SubResource("TileSetAtlasSource_6xh1p")
 [node name="TestScene" type="Node2D"]
 script = ExtResource("1_b5ayd")
 
-[node name="Grid" type="Node" parent="." node_paths=PackedStringArray("GroundLayer", "PassabilityLayer", "RangeLayer")]
-script = ExtResource("3_0f5h7")
-GroundLayer = NodePath("../Map/Ground")
-PassabilityLayer = NodePath("../Map/Passability")
-RangeLayer = NodePath("../Map/Highlight")
-
 [node name="MapObjects" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("3_ytmxh")
 
 [node name="PCs" type="Node2D" parent="MapObjects"]
 
 [node name="Karla" type="Sprite2D" parent="MapObjects/PCs"]
+z_index = 10
 position = Vector2(104, 24)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("5_c264a")
 script = ExtResource("11_hctok")
 
+[node name="Karla2" type="Sprite2D" parent="MapObjects/PCs"]
+z_index = 10
+position = Vector2(72, 56)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("5_c264a")
+script = ExtResource("11_hctok")
+
 [node name="Cursor" type="ReferenceRect" parent="."]
+unique_name_in_owner = true
 z_index = 20
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1558,18 +1655,23 @@ border_width = 3.0
 editor_only = false
 script = ExtResource("11_xjl2p")
 
-[node name="Map" type="Node2D" parent="."]
+[node name="Map" type="Node2D" parent="." node_paths=PackedStringArray("GroundLayer")]
+unique_name_in_owner = true
 script = ExtResource("6_ytmxh")
+GroundLayer = NodePath("Ground")
 
 [node name="Passability" type="TileMapLayer" parent="Map"]
 z_index = 10
 tile_map_data = PackedByteArray("AAAGAAAAAAAAAAAAAAAAAAQAAAAAAAEAAAAAAAAAAAADAAIAAAAAAAIAAAAAAAEAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAMAAAAAAABAAIAAAAMAAEAAAAEAAEAAAAMAAIAAAAEAAEAAAAMAAMAAAAEAAEAAAAMAAQAAAAEAAEAAAAMAAUAAAAEAAEAAAAMAAYAAAAEAAEAAAAMAAcAAAAEAAEAAAAMAAgAAAAEAAEAAAAMAAkAAAAEAAEAAAAMAAoAAAABAAAAAAALAAoAAAAEAAIAAAAKAAoAAAAEAAIAAAAJAAoAAAAEAAIAAAAIAAoAAAAEAAIAAAAHAAoAAAAEAAIAAAAGAAoAAAAEAAIAAAAFAAoAAAAEAAIAAAAEAAoAAAAEAAIAAAADAAoAAAAEAAIAAAACAAoAAAAEAAIAAAABAAoAAAAEAAIAAAAAAAoAAAADAAAAAAAAAAkAAAAAAAEAAAAAAAgAAAAAAAEAAAAAAAcAAAAAAAEAAAAAAAYAAAAAAAEAAAAAAAUAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAEAAAAAAAEAAAAHAAYAAAACAAEAAAAHAAUAAAACAAEAAAAHAAQAAAACAAEAAAAIAAQAAAACAAEAAAAJAAQAAAACAAEAAAAJAAUAAAACAAEAAAAJAAYAAAACAAEAAAAFAAAAAAADAAIAAAAFAAEAAAAAAAEAAAAEAAIAAAAAAAAAAAAEAAAAAAAAAAAAAAA=")
 tile_set = SubResource("TileSet_201fe")
+script = ExtResource("8_hctok")
 
-[node name="Path" type="TileMapLayer" parent="Map"]
-tile_set = ExtResource("6_6xh1p")
+[node name="PathHighlight" type="TileMapLayer" parent="Map"]
+z_index = 6
+tile_set = SubResource("TileSet_p30di")
+script = ExtResource("10_hctok")
 
-[node name="Highlight" type="TileMapLayer" parent="Map"]
+[node name="RangeHighlight" type="TileMapLayer" parent="Map"]
 modulate = Color(1, 1, 1, 0.498039)
 z_index = 5
 tile_set = SubResource("TileSet_xjl2p")

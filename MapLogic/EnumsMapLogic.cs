@@ -1,8 +1,11 @@
 public enum AttackMode {
-    CloseCombat
+    None,
+    CloseCombat,
+    Mixed,
+    Ranged
 }
 public enum MovementMode {
-    Default,    
+    None,    
     Cavalry, 
     Infantry, 
     Rogue

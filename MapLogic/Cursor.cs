@@ -8,18 +8,27 @@ public partial class Cursor : ReferenceRect
 	public Vector2I GridPosition { get; private set; }
 	private int _tileSize;
 
-	[Signal]
-	public delegate void CursorSelectedEventHandler(Vector2I position);
+	enum CursorState {
+		Normal, 
+		CharSelected
+	}
+
+	private CursorState _state = CursorState.Normal;
+
+	[Signal] public delegate void CursorSelectedEventHandler(Vector2I position);
+	[Signal] public delegate void CursorDeselectedEventHandler();
 
 	public override void _Ready()
 	{
-		var map = GetNode<MapParameters>("/root/TestScene/Map"); 
+		var map = GetNode<TileGrid>("%Map"); 
 		
 		MapWidth = map.Width;
 		MapHeight = map.Height;
 		Size = map.TileSize;
 		_tileSize = (int)map.TileSize[0];
 		GridPosition = new Vector2I(0, 0);
+
+		CallDeferred("SubscribeToMapObjects");
 	}
 
 	public override void _Process(double delta)
@@ -35,16 +44,34 @@ public partial class Cursor : ReferenceRect
 		newPos.X = Mathf.Clamp(newPos.X, 0, MapWidth);
 		newPos.Y = Mathf.Clamp(newPos.Y, 0, MapHeight);
 
-		if (newPos != Position)
-		{
+		if (newPos != GridPosition){
 			GridPosition = newPos;
 			this.Position = GridPosition * _tileSize;
 		}
 		
-		if (Input.IsActionJustPressed("ui_accept"))
-{
-			EmitSignal(SignalName.CursorSelected, GridPosition);
-			GD.Print("Cursor Signal Emitted");
-}
+		switch (_state) { 
+		case CursorState.Normal: 
+			if (Input.IsActionJustPressed("ui_accept")){
+				EmitSignal(SignalName.CursorSelected, GridPosition);
+			}
+			break;
+		case CursorState.CharSelected: 
+			if (Input.IsActionJustPressed("ui_cancel")){
+				EmitSignal(SignalName.CursorDeselected);
+				_state = CursorState.Normal;
+			}
+			break;
 		}
+	}
+
+	private void SubscribeToMapObjects(){
+		var mapObjects = GetNode<MapObjects>("%MapObjects");
+		mapObjects.CharSelected += OnCharSelected;
+	}
+
+	public void OnCharSelected(CharacterSelectionInfo charDTO, Godot.Collections.Array<Vector2I> unpassable, Godot.Collections.Array<Vector2I> unattackable, bool pc) {
+		_state = CursorState.CharSelected;
+	}
+
+
 }
